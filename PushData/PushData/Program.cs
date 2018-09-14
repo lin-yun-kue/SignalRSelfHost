@@ -41,13 +41,29 @@ namespace PushData
             var task = Task.Factory.StartNew(() =>
             {
                 var hub = GlobalHost.ConnectionManager.GetHubContext<HubHelper>();
+                
                 while (IsRun)
                 {
                     Thread.Sleep(1000);
-                    //todo:get latest block id
-                    var id = ChainDataService.GetLatestBlockID();
-                    var chainData = ChainDataService.GetBlockByID(100);
-                    hub.Clients.All.getMessage(chainData.Timestamp, chainData.TransactionNumber);
+                    long finalBlockNumber;
+                    var info = ChainDataService.GetGUCAutodataInfo(out finalBlockNumber);
+                    if(info.GetHashCode() == 0 || finalBlockNumber == 0)
+                    {
+                        continue;
+                    }
+                    var clients = HubHelper.connections.Where(x => x.Value.LastFinalBlockNumber != finalBlockNumber).Select(x => x.Key).ToList();
+                    if (clients.Any() == false)
+                    {
+                        continue;
+                    }
+                    hub.Clients.Clients(clients).getMessage(info);
+                    foreach(var item in HubHelper.connections)
+                    {
+                        if (clients.Contains(item.Key))
+                        {
+                            item.Value.LastFinalBlockNumber = finalBlockNumber;
+                        }
+                    }
                 }
             });
         }

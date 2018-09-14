@@ -15,42 +15,35 @@ namespace PushData.Service
     {
         private static string url = ConfigurationManager.AppSettings["ApiUrl"];
 
-        public static ChainData GetBlockByID(int id)
+        public static object GetGUCAutodataInfo(out long finalblocknumber)
         {
+            var client = new HttpClient();
+
             try
             {
-                var client = new HttpClient();
-                var requestUrl = $"{url}/getBlockbyID/{id.ToString()}";
+                var requestUrl = $"{url}/gucautodatainfo";
                 var response = client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
-                    return default(ChainData);
+                    throw new Exception($"{DateTime.Now}:api fail");
                 }
-
                 var resultJSON = response.Content.ReadAsStringAsync().Result;
                 client.Dispose();
 
-                dynamic data = JObject.Parse(resultJSON);
-                var timeStamp = (int)data.result.timestamp;
-                var transactionNumber = data.result.transaction.Count;
-                var chainData = new ChainData
-                {
-                    Timestamp = timeStamp,
-                    TransactionNumber = transactionNumber
-                };
-                return chainData;
+                dynamic data = JsonConvert.DeserializeObject(resultJSON);
+                finalblocknumber = (int)data.finalblocknumber;
+                return data;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                finalblocknumber = 0;
+                return new { };
             }
-            return default(ChainData);
-        }
-
-        public static int GetLatestBlockID()
-        {
-            //todo: wait api
-            return 100;
+            finally
+            {
+                client.Dispose();
+            }
         }
     }
 }

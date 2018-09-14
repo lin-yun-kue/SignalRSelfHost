@@ -16,7 +16,10 @@ namespace ClientTest
             IHubProxy commHub = connection.CreateHubProxy("PushData");
 
             //宣告function
-            commHub.On<string, string>("getMessage", (n,m) => Console.WriteLine($"{n}:{m}"));
+            commHub.On<object>("getMessage", x => {
+                Console.WriteLine(x);
+
+            });
 
             bool done = false;
             commHub.On("Exit", () => { done = true; });
