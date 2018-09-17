@@ -12,7 +12,8 @@ namespace ClientTest
         static void Main(string[] args)
         {
             //連線SignalR Hub
-            var connection = new HubConnection("http://localhost:8080/");
+            //var connection = new HubConnection("http://192.168.51.158:8080");
+            var connection = new HubConnection("http://125.227.132.127:44000");
             IHubProxy commHub = connection.CreateHubProxy("PushData");
 
             //宣告function

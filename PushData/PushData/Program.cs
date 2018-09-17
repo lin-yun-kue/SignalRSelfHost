@@ -17,6 +17,7 @@ namespace PushData
     {
 
         private static bool IsRun = true;
+        private static bool done = false;
 
         static void Main(string[] args)
         {
@@ -27,10 +28,11 @@ namespace PushData
 
                 var command = "";
                 PushData();
-                command = Console.ReadLine();
-                if (command.ToUpper() == "EXIT")
+
+                while (!done)
                 {
-                    IsRun = false;
+                    command = Console.ReadLine();
+                    if (command.ToUpper() == "EXIT") done = true;
                 }
                 Console.ReadLine();
             }
@@ -64,6 +66,7 @@ namespace PushData
                             item.Value.LastFinalBlockNumber = finalBlockNumber;
                         }
                     }
+                    Console.Out.Flush();
                 }
             });
         }
