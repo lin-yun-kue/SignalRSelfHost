@@ -27,14 +27,13 @@ namespace PushData.Service
 
             try
             {
-                var requestUrl = "/gucautodatainfo";
+                var requestUrl = "gucautodatainfo";
                 var response = client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
                     throw new Exception($"{DateTime.Now}:api fail");
                 }
                 var resultJSON = response.Content.ReadAsStringAsync().Result;
-                client.Dispose();
 
                 dynamic data = JsonConvert.DeserializeObject(resultJSON);
                 finalblocknumber = (int)data.finalblocknumber;
