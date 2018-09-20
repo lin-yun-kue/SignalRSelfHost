@@ -14,14 +14,20 @@ namespace PushData.Service
     public class ChainDataService
     {
         private static string url = ConfigurationManager.AppSettings["ApiUrl"];
+        private static readonly HttpClient client = new HttpClient();
+
+        static ChainDataService()
+        {
+            client.BaseAddress = new Uri(url);
+        }
 
         public static object GetGUCAutodataInfo(out long finalblocknumber)
         {
-            var client = new HttpClient();
+            
 
             try
             {
-                var requestUrl = $"{url}/gucautodatainfo";
+                var requestUrl = "/gucautodatainfo";
                 var response = client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
@@ -39,10 +45,6 @@ namespace PushData.Service
                 Console.WriteLine(e.Message);
                 finalblocknumber = 0;
                 return new { };
-            }
-            finally
-            {
-                client.Dispose();
             }
         }
     }
