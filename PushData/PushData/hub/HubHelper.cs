@@ -23,8 +23,12 @@ namespace PushData.hub
         public override Task OnConnected()
         {
             var cid = Context.ConnectionId;
-            Console.WriteLine($"Connect:{cid}");
             connections.TryAdd(cid, new ConnectionStatus { LastFinalBlockNumber = 0 });
+
+            Console.WriteLine($"Connect {DateTime.Now.ToString()} :{cid}");
+            Console.WriteLine($"NumberOfConnection:{connections.Count}");
+            Console.Out.Flush();
+
             return base.OnConnected();
         }
 
@@ -33,7 +37,11 @@ namespace PushData.hub
             var cid = Context.ConnectionId;
             ConnectionStatus value;
             connections.TryRemove(cid, out value);
-            Console.WriteLine($"Disconnect:{cid}");
+
+            Console.WriteLine($"Disconnect {DateTime.Now.ToString()} :{cid}");
+            Console.WriteLine($"NumberOfConnection:{connections.Count}");
+            Console.Out.Flush();
+
             return base.OnDisconnected(stopCalled);
         }
     }
