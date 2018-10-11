@@ -42,6 +42,7 @@ namespace PushData.Service
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.Out.Flush();
                 finalblocknumber = 0;
                 return new { };
             }
