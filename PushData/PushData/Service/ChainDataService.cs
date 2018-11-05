@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using PushData.Model;
 using System;
 using System.Collections.Generic;
@@ -13,25 +14,24 @@ namespace PushData.Service
 {
     public class ChainDataService
     {
-        private static string url = ConfigurationManager.AppSettings["ApiUrl"];
-        private static readonly HttpClient client = new HttpClient();
+        private static readonly string _url = ConfigurationManager.AppSettings["ApiUrl"];
+        private static readonly HttpClient _client = new HttpClient();
+        private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         static ChainDataService()
         {
-            client.BaseAddress = new Uri(url);
+            _client.BaseAddress = new Uri(_url);
         }
 
         public static object GetGUCAutodataInfo(out long finalblocknumber)
         {
-            
-
             try
             {
-                var requestUrl = "gucautodatainfo";
-                var response = client.GetAsync(requestUrl).Result;
+                var requestUrl = "bnnautodatainfo";
+                var response = _client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
-                    throw new Exception($"{DateTime.Now}:api fail");
+                    throw new Exception($"{DateTime.Now}:{_url} fail");
                 }
                 var resultJSON = response.Content.ReadAsStringAsync().Result;
 
@@ -41,7 +41,9 @@ namespace PushData.Service
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.Error($"call {_url} fail");
+                _logger.Error(e.Message);
+                Console.WriteLine($"{DateTime.Now}:{e.Message}");
                 Console.Out.Flush();
                 finalblocknumber = 0;
                 return new { };

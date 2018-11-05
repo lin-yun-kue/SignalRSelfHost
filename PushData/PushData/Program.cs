@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Configuration;
 using Microsoft.Owin.Hosting;
+using NLog;
 using PushData.hub;
 using PushData.Service;
 using System;
@@ -18,14 +19,16 @@ namespace PushData
 
         private static bool IsRun = true;
         private static bool done = false;
+        private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         static void Main(string[] args)
         {
             var url = ConfigurationManager.AppSettings["HostUrl"];
             using (WebApp.Start(url))
             {
+                _logger.Info($"Server running on {url}");
                 Console.WriteLine("Server running on {0}", url);
-
+                
                 var command = "";
                 PushData();
 
