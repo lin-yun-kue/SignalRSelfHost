@@ -27,7 +27,7 @@ namespace PushData.Service
         {
             try
             {
-                var requestUrl = "aitcautodatainfo";
+                var requestUrl = "tgcautodatainfo";
                 var response = _client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
