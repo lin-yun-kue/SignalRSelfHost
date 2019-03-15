@@ -27,7 +27,7 @@ namespace PushData.Service
         {
             try
             {
-                var requestUrl = "aitcautodatainfo";
+                var requestUrl = "autodatainfo?item=bnn";
                 var response = _client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
