@@ -27,7 +27,7 @@ namespace PushData.Service
         {
             try
             {
-                var requestUrl = "bnnautodatainfo";
+                var requestUrl = "bnnautodatainfo?item=old_bnn";
                 var response = _client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
