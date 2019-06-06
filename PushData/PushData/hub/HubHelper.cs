@@ -26,6 +26,7 @@ namespace PushData.hub
             connections.TryAdd(cid, new ConnectionStatus { LastFinalBlockNumber = 0 });
 
             Console.WriteLine($"Connect {DateTime.Now.ToString()} :{cid}");
+            Console.Out.Flush();
             Console.WriteLine($"NumberOfConnection:{connections.Count}");
             Console.Out.Flush();
 
@@ -39,6 +40,7 @@ namespace PushData.hub
             connections.TryRemove(cid, out value);
 
             Console.WriteLine($"Disconnect {DateTime.Now.ToString()} :{cid}");
+            Console.Out.Flush();
             Console.WriteLine($"NumberOfConnection:{connections.Count}");
             Console.Out.Flush();
 

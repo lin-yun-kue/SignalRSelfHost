@@ -51,11 +51,13 @@ namespace PushData
                     var info = ChainDataService.GetGUCAutodataInfo(out finalBlockNumber);
                     if(info.GetHashCode() == 0 || finalBlockNumber == 0)
                     {
+                        Console.Out.Flush();
                         continue;
                     }
                     var clients = HubHelper.connections.Where(x => x.Value.LastFinalBlockNumber != finalBlockNumber).Select(x => x.Key).ToList();
                     if (clients.Any() == false)
                     {
+                        Console.Out.Flush();
                         continue;
                     }
                     hub.Clients.Clients(clients).getMessage(info);
