@@ -27,7 +27,7 @@ namespace PushData.Service
 
             try
             {
-                var requestUrl = "cicautodatainfo";
+                var requestUrl = "autodatainfo?item=api";
                 var response = client.GetAsync(requestUrl).Result;
                 if (response.IsSuccessStatusCode == false)
                 {
